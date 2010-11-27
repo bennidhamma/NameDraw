@@ -8,6 +8,7 @@ namespace NameDraw
 {
 	class MainClass
 	{
+		//The email string to send to drawers
 		private const string emailFormat = @"
 Dear {0},
 
@@ -23,6 +24,7 @@ Santa's Grown Up Helper
 -------------------------------------------------------------------------------------------------------
 ";
 		
+		//The html template to populate with the drawee's name
 		private const string htmlFormat = @"
 <html>
 <head>
@@ -46,6 +48,7 @@ Liability waivers may be downloaded
 		
 		public static void Main (string[] args)
 		{
+			//The list of participants, first as a collection of drawers.
 			List<string> drawers = new List<string> () {
 				"Tom", 
 				"Samara", 
@@ -60,30 +63,52 @@ Liability waivers may be downloaded
 				"Kate"
 			};
 			
+			//Copy the list to create a shrinking pool of drawees.
+			//The algorithm here is to shrink the pool by one each time we successfully find a match.
 			List<string> drawees = new List<string> (drawers);
 			
+			//Request a list of 100 truly random numbers from RANODM.ORG.
 			WebClient wc = new WebClient ();
 			StreamReader sr = new StreamReader (wc.OpenRead ("http://www.random.org/integers/?num=100&min=1&max=100&col=1&base=10&format=plain&rnd=new"));
+			
+			//Create a delegate (callback function) that reads one line from the web request, converts it to an integer, and returns that value.
 			var readInt = new Func<int> (delegate {
 				return int.Parse (sr.ReadLine ());
 			});
-
+			
+			//loop through each drawer
 			foreach (string drawer in drawers)
 			{
+				//Generate a unique guid (key) for this drawer, this will serve as the file name, to help obscure the URL and avoid any 
+				//unwanted snooping!
 				Guid g = Guid.NewGuid ();			
+				
 				string drawee = null;
+				//In order to avoid drawing yourself, we keep picking a drawee until we have one that is not the drawer.  
+				//In other words, keep drawing a drawee while that drawee is the same as the drawer (usually this will only happen once).
 				do 
 				{
-					drawee = drawees[readInt()%drawees.Count];
+					//select a name from the drawees list by reading an integer from the web stream, and modulating the number by the size of the 
+					//drawees list.
+					drawee = drawees [readInt () % drawees.Count];
 				}
 				while (drawee == drawer);
+				//now remove the drawee from the drawees list, so he/she won't be picked again.
 				drawees.Remove (drawee);
 				
+				//format and print out the email string to send to the draweer
 				System.Console.WriteLine (emailFormat, drawer, g);
 				
+				//Open a file to write out the html containing the drawee's name
 				TextWriter tw = new StreamWriter (g.ToString() + ".html");
+				
+				//Format and write the html to the file.
 				tw.Write (htmlFormat, drawee);
+				
+				//save and close.
 				tw.Close ();
+				
+				//continue the loop until we are done!
  			}
 		}
 	}
