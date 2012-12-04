@@ -89,12 +89,17 @@ namespace NameDraw
 					throw new Exception ("Exclusion drew");
 			}
 
+			if (drawees.Count > 0)
+				throw new Exception ("Not everyone was drawn");
+
 			Console.WriteLine ("Sanity verified. okay to email.");
 
 			//email!
+			/*
 			Mailer m = new Mailer (From);
 			foreach (var entry in drawers)
 				m.Send (entry.Email, entry.Name, Subject, string.Format (emailFormat, entry.Name, entry.WhoYouDrew.Name));
+			*/
 		}
 	}
 
