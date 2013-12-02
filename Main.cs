@@ -8,8 +8,12 @@ namespace NameDraw
 {
 	class MainClass
 	{		
-		public static string From = "bennidhamma@gmail.com";
-		public static string Subject = "IMPORTANT!! Joldersma Famly Name Draw 2012! -- DATED MATERIAL - OPEN IMMEDIATELY!!";
+		static float ExcludeProbability = 0.8f;
+		static bool DryRun = true;
+		static string From = "bennidhamma@gmail.com";
+		static string Subject = "IMPORTANT!! Joldersma Famly Name Draw 2013! -- DATED MATERIAL - OPEN IMMEDIATELY!!";
+		static Random random = new Random();
+
 
 		public static void Main (string[] args)
 		{
@@ -48,13 +52,11 @@ namespace NameDraw
 				Entry drawee = null;
 				//In order to avoid drawing yourself, we keep picking a drawee until we have one that is not the drawer.  
 				//In other words, keep drawing a drawee while that drawee is the same as the drawer (usually this will only happen once).
-				do 
-				{
+				do {
 					//select a name from the drawees list by reading an integer from the web stream, and modulating the number by the size of the 
 					//drawees list.
 					drawee = drawees [readInt () % drawees.Count];
-				}
-				while (drawee == drawer || drawer.Exclusions.Contains (drawee.Name));
+				} while(!IsValidDraw(drawer, drawee));
 
 				if (drawer.WhoYouDrew != null)
 					throw new Exception (string.Format ("{0} already drew {1}", drawer, drawer.WhoYouDrew));
@@ -85,7 +87,7 @@ namespace NameDraw
 				drawees.Remove (entry.WhoYouDrew);
 				if (entry.WhoYouDrew.WhoDrewYou != entry)
 					throw new Exception ("Draw mismatch");
-				if (entry.Exclusions.Contains (entry.WhoYouDrew.Name))
+				if (ExcludeProbability == 1 && entry.Exclusions.Contains (entry.WhoYouDrew.Name))
 					throw new Exception ("Exclusion drew");
 			}
 
@@ -95,11 +97,28 @@ namespace NameDraw
 			Console.WriteLine ("Sanity verified. okay to email.");
 
 			//email!
-			/*
 			Mailer m = new Mailer (From);
-			foreach (var entry in drawers)
-				m.Send (entry.Email, entry.Name, Subject, string.Format (emailFormat, entry.Name, entry.WhoYouDrew.Name));
-			*/
+			foreach (var entry in drawers) {
+				string body = string.Format (emailFormat, entry.Name, entry.WhoYouDrew.Name);
+				if (DryRun) {
+					Console.WriteLine (body);
+				} else {
+					m.Send (entry.Email, entry.Name, Subject, body);
+				}
+			}
+		}
+
+		private static bool IsValidDraw (Entry drawer, Entry drawee)
+		{
+			if (drawee == drawer) {
+				return false;
+			}
+
+			if (random.NextDouble() < ExcludeProbability && drawer.Exclusions.Contains(drawee.Name)) {
+				return false;
+			}
+
+			return true;
 		}
 	}
 
