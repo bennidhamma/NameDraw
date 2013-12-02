@@ -1,16 +1,1 @@
-Tom,tom.joldersma@gmail.com,Samara
-Samara,samara.joldersma@gmail.com,Tom
-Nicole,nicolebradford@gmail.com,Ben:Vivienne:Desmond
-Damien,damien@joldersma.org,Rie:Aiden
-Rie,rieando@gmail.com,Damien:Aiden
-Paul,infodawg@gmail.com,Kate:Jackson
-Jonah,jonah.joldersma@gmail.com
-Jackson,phyco.monkeyen8or@gmail.com,Kate:Paul
-Kate,purplegreengold@gmail.com,Jackson:Paul
-Vivienne,nicolebradford@gmail.com>,Nicole:Ben:Desmond
-Aiden,firedragon1106@gmail.com,Damien:Rie
-Desmond,ben@joldersma.org,Nicole:Ben:Vivienne
-Ben,ben@joldersma.org,Nicole:Vivienne:Desmond
-Paula,paularbradford@gmail.com,Candace:Bruce
-Bruce,brucecbradford@gmail.com,Paula:Candace
-Candace,texaspq@gmail.com,Paula:Bruce
+NAME,EMAIL,EXCLUSIONS
