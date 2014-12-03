@@ -8,10 +8,10 @@ namespace NameDraw
 {
 	class MainClass
 	{		
-		static float ExcludeProbability = 0.8f;
+		static float ExcludeProbability = 1f;
 		static bool DryRun = true;
 		static string From = "bennidhamma@gmail.com";
-		static string Subject = "IMPORTANT!! Joldersma Famly Name Draw 2013! -- DATED MATERIAL - OPEN IMMEDIATELY!!";
+		static string Subject = "Joldersma Family Name Draw 2014 - Merry Christmas!";
 		static Random random = new Random();
 
 
