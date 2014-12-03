@@ -99,11 +99,14 @@ namespace NameDraw
 			//email!
 			Mailer m = new Mailer (From);
 			foreach (var entry in drawers) {
-				string body = string.Format (emailFormat, entry.Name, entry.WhoYouDrew.Name);
-				if (DryRun) {
-					Console.WriteLine (body);
-				} else {
-					m.Send (entry.Email, entry.Name, Subject, body);
+				foreach(var email in entry.Email.Split(':')) {
+					string body = string.Format (emailFormat, entry.Name, entry.WhoYouDrew.Name);
+					if (DryRun) {
+						Console.WriteLine ("Giver: {0}, Recipient: {1}, Who Drew You: {2}, Email: {3}", entry.Name, entry.WhoYouDrew, entry.WhoDrewYou, email);
+						Console.WriteLine (body);
+					} else {
+						m.Send (email, entry.Name, Subject, body);
+					}
 				}
 			}
 		}
