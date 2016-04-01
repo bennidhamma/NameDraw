@@ -9,9 +9,9 @@ namespace NameDraw
 	class MainClass
 	{		
 		static float ExcludeProbability = 1f;
-		static bool DryRun = true;
+		static bool DryRun = false;
 		static string From = "bennidhamma@gmail.com";
-		static string Subject = "Joldersma Family Name Draw 2014 - Merry Christmas!";
+		static string Subject = "Joldersma & Co. Family Name Draw 2015 - Merry Christmas!";
 		static Random random = new Random();
 
 
